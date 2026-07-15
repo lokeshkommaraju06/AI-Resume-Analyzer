@@ -1,7 +1,9 @@
 import fs from 'fs';
-import pdfParse from 'pdf-parse';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdfParse = require('pdf-parse');
 import Resume from '../models/Resume.js';
-import { analyzeResume as openaiAnalyzeResume } from '../services/openaiService.js';
+import { analyzeResume as aiAnalyze } from '../services/geminiService.js';
 
 export const analyzeResume = async (req, res) => {
     try {
@@ -20,8 +22,8 @@ export const analyzeResume = async (req, res) => {
         const data = await pdfParse(dataBuffer);
         const extractedText = data.text;
 
-        // Call OpenAI Service
-        const analysisResult = await openaiAnalyzeResume(extractedText, jobDescription);
+        // Call Gemini Service
+        const analysisResult = await aiAnalyze(extractedText, jobDescription);
 
         // Save to Database
         const newResume = new Resume({
@@ -45,7 +47,7 @@ export const analyzeResume = async (req, res) => {
         if (req.file && fs.existsSync(req.file.path)) {
             fs.unlinkSync(req.file.path);
         }
-        res.status(500).json({ error: 'An error occurred during resume analysis.' });
+        res.status(500).json({ error: error.message || 'An error occurred during resume analysis.' });
     }
 };
 

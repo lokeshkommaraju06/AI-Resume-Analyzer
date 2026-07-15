@@ -1,10 +1,11 @@
-import OpenAI from 'openai';
+import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+// Initialize the Gemini client
+const ai = new GoogleGenAI({
+    apiKey: process.env.GEMINI_API_KEY
 });
 
 export const analyzeResume = async (resumeText, jobDescription) => {
@@ -36,18 +37,20 @@ export const analyzeResume = async (resumeText, jobDescription) => {
     `;
 
     try {
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
-                { role: "system", content: "You are an expert AI Resume Analyzer. You always respond with raw, valid JSON." },
-                { role: "user", content: prompt }
-            ],
-            response_format: { type: "json_object" }
+        const response = await ai.models.generateContent({
+            model: 'gemini-flash-latest',
+            contents: prompt,
+            config: {
+                responseMimeType: "application/json",
+            }
         });
 
-        return JSON.parse(response.choices[0].message.content);
+        let text = response.text;
+        text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+        
+        return JSON.parse(text);
     } catch (error) {
-        console.error("OpenAI API Error:", error);
-        throw new Error("Failed to analyze resume with AI.");
+        console.error("Gemini API Error:", error);
+        throw new Error(error.message || "Failed to analyze resume with Gemini AI.");
     }
 };

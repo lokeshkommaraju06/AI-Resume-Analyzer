@@ -1,6 +1,6 @@
 # AI Resume Analyzer
 
-An intelligent, AI-powered Applicant Tracking System (ATS) Resume Analyzer. This full-stack application allows users to upload their resumes in PDF format, compare them against specific job descriptions, and receive detailed feedback powered by OpenAI.
+An intelligent, AI-powered Applicant Tracking System (ATS) Resume Analyzer. This full-stack application allows users to upload their resumes in PDF format, compare them against specific job descriptions, and receive detailed feedback powered by Google Gemini.
 
 ## Features
 
@@ -16,7 +16,7 @@ An intelligent, AI-powered Applicant Tracking System (ATS) Resume Analyzer. This
 - **Frontend:** React, React Router, Tailwind CSS, Axios, Lucide React (Icons), Vite
 - **Backend:** Node.js, Express.js, Multer (File uploads), pdf-parse (Text extraction)
 - **Database:** MongoDB, Mongoose
-- **AI Integration:** OpenAI API (GPT-4o)
+- **AI Integration:** Google Gemini API
 
 ## Project Structure
 
@@ -36,7 +36,7 @@ AI-Resume-Analyzer/
 │   ├── middleware/         # Multer configuration for file uploads
 │   ├── models/             # MongoDB Schemas (Mongoose)
 │   ├── routes/             # Express API routes
-│   ├── services/           # OpenAI service functions
+│   ├── services/           # Gemini AI service functions
 │   ├── uploads/            # Temporary storage for uploaded PDFs
 │   ├── .env                # Backend environment variables
 │   ├── index.js            # Express server entry point
@@ -49,7 +49,7 @@ AI-Resume-Analyzer/
 ### 1. Prerequisites
 - [Node.js](https://nodejs.org/) installed
 - [MongoDB](https://www.mongodb.com/try/download/community) installed locally or a MongoDB Atlas account
-- [OpenAI API Key](https://platform.openai.com/api-keys)
+- [Google Gemini API Key](https://aistudio.google.com/app/apikey)
 
 ### 2. Backend Setup
 ```bash
@@ -61,7 +61,7 @@ Configure Environment Variables (`server/.env`):
 ```env
 PORT=5000
 MONGODB_URI=mongodb://127.0.0.1:27017/ai-resume-analyzer
-OPENAI_API_KEY=your_openai_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 Start the Backend Server:
@@ -86,11 +86,10 @@ Start the Frontend Server:
 npm run dev
 ```
 
-## Deployment
+## Usage / Local Links
 
-- **Frontend:** Can be easily deployed to Vercel or Netlify by importing the `client` directory. Make sure to set `VITE_API_URL` to your backend URL.
-- **Backend:** Can be deployed to Render, Railway, or Heroku. Remember to add your `MONGODB_URI` and `OPENAI_API_KEY` to the environment variables on your hosting provider.
-- **Database:** Use MongoDB Atlas for a cloud database solution.
+- **Frontend App:** [http://localhost:5173](http://localhost:5173)
+- **Backend API:** `http://localhost:5000`
 
 ## Future Improvements
 
