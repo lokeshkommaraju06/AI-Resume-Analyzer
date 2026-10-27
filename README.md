@@ -1,56 +1,130 @@
-# AI Resume Analyzer
+# AI Resume Analyzer 📄✨
 
-An intelligent, AI-powered Applicant Tracking System (ATS) Resume Analyzer. This full-stack application allows users to upload their resumes in PDF format, compare them against specific job descriptions, and receive detailed feedback powered by Google Gemini.
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://ai-resume-analyzer-cyan-eight.vercel.app)
+[![Backend API](https://img.shields.io/badge/API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://ai-resume-analyzer-api-jpzd.onrender.com)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+[![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://mongodb.com)
+[![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75C2?style=for-the-badge&logo=googlegemini&logoColor=white)](https://aistudio.google.com)
 
-## Features
+An intelligent, full-stack **Applicant Tracking System (ATS) Resume Analyzer** built with the MERN stack and Google Gemini AI. 
 
-- **Resume Upload:** Upload PDF resumes (up to 5MB, processed in-memory).
-- **AI Analysis:** Get an ATS score, strengths, weaknesses, and a summary.
-- **Keyword Matching:** Identify missing skills and keywords based on the job description.
-- **Actionable Suggestions:** Receive AI-generated suggestions for grammar, formatting, and overall improvement.
-- **History Dashboard:** View and manage your previous analyses.
-- **Modern Responsive UI:** Built with React and pure CSS3 (Flexbox & CSS Grid, no external CSS frameworks).
+Upload your resume in PDF format, paste your target job description, and instantly receive comprehensive ATS scoring, keyword match analysis, identified skill gaps, and actionable recommendations to optimize your chances of landing interviews.
 
-## Tech Stack
+---
 
-- **Frontend:** React, React Router, CSS3 (Custom Variables, Flexbox, Grid), Axios, Lucide React (Icons), Vite
-- **Backend:** Node.js, Express.js, Multer (Memory Storage), pdf-parse (Text extraction)
-- **Database:** MongoDB, Mongoose
-- **AI Integration:** Google Gemini API
+## 🌐 Live Links
 
-## Project Structure
+- **🚀 Live Application:** [https://ai-resume-analyzer-cyan-eight.vercel.app](https://ai-resume-analyzer-cyan-eight.vercel.app)
+- **🔌 Backend API:** [https://ai-resume-analyzer-api-jpzd.onrender.com](https://ai-resume-analyzer-api-jpzd.onrender.com)
+- **📁 GitHub Repository:** [https://github.com/lokeshkommaraju06/AI-Resume-Analyzer](https://github.com/lokeshkommaraju06/AI-Resume-Analyzer)
+
+---
+
+## ✨ Features
+
+- 📑 **In-Memory PDF Parsing:** Securely process PDF resumes up to 5MB directly in memory without persistent disk writes.
+- 🎯 **ATS Match Scoring:** Calculate a quantified percentage match against job requirements.
+- 🔍 **Keyword & Skill Gap Detection:** Highlights both missing domain skills and critical job-specific keywords.
+- 💡 **Actionable Improvements:** Step-by-step guidance on formatting, grammar, and content alignment.
+- 📊 **Strengths & Weaknesses Breakdown:** Clear categorization of resume highlights and areas needing polish.
+- 🗄️ **Persistent History Dashboard:** Stores past analyses in MongoDB Atlas for quick review and comparison.
+- 🎨 **Pure CSS3 Design:** Crafted with modern CSS3 variables, Flexbox, and CSS Grid (no external CSS framework overhead).
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **Framework:** React.js (Vite)
+- **Routing:** React Router v7
+- **Styling:** Pure CSS3 (Flexbox, CSS Grid, Custom Variables, Responsive Media Queries)
+- **Icons:** Lucide React
+- **HTTP Client:** Axios
+- **Deployment:** Vercel (with SPA route rewrites)
+
+### Backend
+- **Runtime:** Node.js & Express.js
+- **File Uploads:** Multer (`memoryStorage`)
+- **PDF Extraction:** `pdf-parse`
+- **Database:** MongoDB Atlas with Mongoose ODM
+- **AI Engine:** Google Gemini API (`@google/genai` SDK)
+- **Deployment:** Render (Node.js Web Service)
+
+---
+
+## 🏛️ Architecture Workflow
+
+```
+[ Candidate PDF + Job Description ]
+                 │
+                 ▼
+         [ React Frontend ]
+                 │ (Multipart Form Data via Axios)
+                 ▼
+       [ Express.js Backend ]
+                 │
+                 ├─► [ Multer Memory Buffer ] ──► [ pdf-parse ] (Extracts Text)
+                 │
+                 ├─► [ Google Gemini AI ] (Evaluates ATS Fit & Generates JSON)
+                 │
+                 ├─► [ MongoDB Atlas ] (Saves Analysis Record)
+                 │
+                 ▼
+       [ Visual Result Dashboard ]
+```
+
+---
+
+## 📁 Project Structure
 
 ```text
 AI-Resume-Analyzer/
-├── client/                 # React frontend
+├── client/                     # React Frontend
 │   ├── src/
-│   │   ├── components/     # Reusable UI components
-│   │   ├── pages/          # Application pages (Home, Analyzer, History)
-│   │   ├── services/       # API integration (Axios)
-│   │   ├── App.jsx         # Routing & Main Layout
-│   │   └── index.css       # Pure CSS3 styles (Variables, Flexbox, Grid)
-│   ├── vercel.json         # Vercel deployment SPA rewrite config
-│   ├── .env                # Frontend environment variables
-│   └── package.json        # Frontend dependencies
-├── server/                 # Express backend
-│   ├── controllers/        # Route logic and AI integration
-│   ├── middleware/         # Multer configuration (in-memory PDF buffer)
-│   ├── models/             # MongoDB Schemas (Mongoose)
-│   ├── routes/             # Express API routes
-│   ├── services/           # Gemini AI service functions
-│   ├── .env                # Backend environment variables
-│   ├── index.js            # Express server entry point
-│   └── package.json        # Backend dependencies
-├── render.yaml             # Render deployment configuration
+│   │   ├── components/         # Reusable UI (Navbar, Footer, ScoreCard, Cards)
+│   │   ├── pages/              # Home, Analyzer, History
+│   │   ├── services/           # Axios API service (api.js)
+│   │   ├── App.jsx             # React Router Layout
+│   │   ├── index.css           # Pure CSS3 styles (Variables, Flexbox, Grid)
+│   │   └── main.jsx            # React root mount
+│   ├── vercel.json             # Vercel SPA routing configuration
+│   ├── .env                    # Frontend environment variables
+│   └── package.json
+├── server/                     # Express Backend
+│   ├── controllers/            # Controller logic (resumeController.js)
+│   ├── middleware/             # Multer upload configuration (in-memory)
+│   ├── models/                 # Mongoose Schema (Resume.js)
+│   ├── routes/                 # API endpoints (api.js)
+│   ├── services/               # Gemini AI prompt integration (geminiService.js)
+│   ├── .env                    # Backend environment variables
+│   ├── index.js                # Server entry point & health check
+│   └── package.json
+├── render.yaml                 # Render infrastructure configuration
 └── README.md
 ```
 
-## Setup & Local Installation
+---
+
+## 🔌 API Reference
+
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/` | Health check and server status |
+| `POST` | `/api/analyze` | Uploads PDF resume + job description for AI evaluation |
+| `GET` | `/api/history` | Fetches all previous resume analyses |
+| `GET` | `/api/history/:id` | Fetches specific resume analysis by ID |
+| `DELETE` | `/api/history/:id` | Deletes an analysis record from database |
+
+---
+
+## 💻 Local Setup & Development
 
 ### 1. Prerequisites
-- [Node.js](https://nodejs.org/) installed
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or local MongoDB instance
+- [Node.js](https://nodejs.org/) (v18+)
 - [Google AI Studio API Key](https://aistudio.google.com/app/apikey)
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) or local MongoDB
 
 ### 2. Backend Setup
 ```bash
@@ -58,64 +132,60 @@ cd server
 npm install
 ```
 
-Configure Environment Variables (`server/.env`):
+Create a `.env` file in `server/`:
 ```env
 PORT=5000
 MONGODB_URI=your_mongodb_connection_string
-GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
-Start the Backend Server:
+Run the backend:
 ```bash
 npm run dev
 ```
 
 ### 3. Frontend Setup
-Open a new terminal window:
+In a new terminal:
 ```bash
 cd client
 npm install
 ```
 
-Configure Environment Variables (`client/.env`):
+Create a `.env` file in `client/`:
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
-Start the Frontend Server:
+Run the frontend:
 ```bash
 npm run dev
 ```
 
----
-
-## Complete Deployment Guide
-
-### A. Deploy Backend to Render (Free)
-1. Push your repository to **GitHub**.
-2. Go to [Render.com](https://render.com) and log in.
-3. Click **New +** -> **Web Service**.
-4. Connect your GitHub repository.
-5. Configure the following settings:
-   - **Name:** `ai-resume-analyzer-api`
-   - **Root Directory:** `server`
-   - **Environment:** `Node`
-   - **Build Command:** `npm install`
-   - **Start Command:** `npm start`
-6. In **Environment Variables**, add:
-   - `MONGODB_URI` = *(Your MongoDB Atlas connection URI)*
-   - `GEMINI_API_KEY` = *(Your Google Gemini API Key)*
-7. Click **Create Web Service**. Once deployed, copy your backend URL (e.g., `https://ai-resume-analyzer-api.onrender.com`).
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-### B. Deploy Frontend to Vercel (Free)
-1. Go to [Vercel.com](https://vercel.com) and log in with GitHub.
-2. Click **Add New** -> **Project** and select your repository.
-3. Configure the project:
-   - **Framework Preset:** `Vite`
-   - **Root Directory:** Click `Edit` and select `client`.
-4. In **Environment Variables**, add:
-   - `VITE_API_URL` = `https://<your-render-backend-url>.onrender.com/api`
+## 🚀 Deployment Guide
+
+### Backend on Render
+1. Push repository to GitHub.
+2. Create a new **Web Service** on [Render.com](https://render.com).
+3. Set **Root Directory** to `server`.
+4. Build Command: `npm install` | Start Command: `npm start`.
+5. Add Environment Variables: `MONGODB_URI` and `GEMINI_API_KEY`.
+6. Select **Free** instance and deploy.
+
+### Frontend on Vercel
+1. Import repository on [Vercel.com](https://vercel.com).
+2. Set **Root Directory** to `client`.
+3. Framework Preset: `Vite`.
+4. Add Environment Variable:
+   - `VITE_API_URL` = `https://<your-render-service>.onrender.com/api`
 5. Click **Deploy**.
-6. Your live app is now online at `https://<your-app-name>.vercel.app`!
+
+---
+
+## 👤 Author
+
+- **GitHub:** [@lokeshkommaraju06](https://github.com/lokeshkommaraju06)
+- **Project:** [AI-Resume-Analyzer](https://github.com/lokeshkommaraju06/AI-Resume-Analyzer)
