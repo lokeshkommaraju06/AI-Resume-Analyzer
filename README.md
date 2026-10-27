@@ -165,26 +165,6 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 
-## 🚀 Deployment Guide
-
-### Backend on Render
-1. Push repository to GitHub.
-2. Create a new **Web Service** on [Render.com](https://render.com).
-3. Set **Root Directory** to `server`.
-4. Build Command: `npm install` | Start Command: `npm start`.
-5. Add Environment Variables: `MONGODB_URI` and `GEMINI_API_KEY`.
-6. Select **Free** instance and deploy.
-
-### Frontend on Vercel
-1. Import repository on [Vercel.com](https://vercel.com).
-2. Set **Root Directory** to `client`.
-3. Framework Preset: `Vite`.
-4. Add Environment Variable:
-   - `VITE_API_URL` = `https://<your-render-service>.onrender.com/api`
-5. Click **Deploy**.
-
----
-
 ## 👤 Author
 
 - **GitHub:** [@lokeshkommaraju06](https://github.com/lokeshkommaraju06)
