@@ -69,7 +69,7 @@ export const getHistory = async (req, res) => {
     }
 };
 
-export const getResumeById = async (req, res) => {
+export const getHistoryById = async (req, res) => {
     try {
         const resume = await Resume.findById(req.params.id);
         if (!resume) {
@@ -82,7 +82,7 @@ export const getResumeById = async (req, res) => {
     }
 };
 
-export const deleteResumeById = async (req, res) => {
+export const deleteHistoryById = async (req, res) => {
     try {
         const resume = await Resume.findByIdAndDelete(req.params.id);
         if (!resume) {
@@ -94,3 +94,6 @@ export const deleteResumeById = async (req, res) => {
         res.status(500).json({ error: 'Failed to delete resume analysis.' });
     }
 };
+
+export const getResumeById = getHistoryById;
+export const deleteResumeById = deleteHistoryById;
