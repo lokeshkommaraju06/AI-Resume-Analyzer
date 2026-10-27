@@ -1,33 +1,26 @@
 import multer from 'multer';
 import path from 'path';
 
-// Set up storage engine
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
+// Memory storage keeps file buffers in RAM - ideal for serverless and cloud containers
+const storage = multer.memoryStorage();
 
 // Check File Type
 function checkFileType(file, cb) {
     const filetypes = /pdf/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = filetypes.test(file.mimetype);
+    const mimetype = filetypes.test(file.mimetype) || file.mimetype === 'application/pdf';
 
     if (mimetype && extname) {
         return cb(null, true);
     } else {
-        cb('Error: PDFs Only!');
+        cb(new Error('Only PDF files are allowed!'));
     }
 }
 
 // Initialize upload
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 5000000 }, // 5MB
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
     fileFilter: function(req, file, cb) {
         checkFileType(file, cb);
     }

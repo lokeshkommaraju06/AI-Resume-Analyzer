@@ -13,12 +13,18 @@ export const analyzeResume = async (req, res) => {
 
         const { jobDescription } = req.body;
         if (!jobDescription) {
-            fs.unlinkSync(req.file.path);
+            if (req.file.path && fs.existsSync(req.file.path)) {
+                fs.unlinkSync(req.file.path);
+            }
             return res.status(400).json({ error: 'Job description is required.' });
         }
 
-        // Parse PDF
-        const dataBuffer = fs.readFileSync(req.file.path);
+        // Parse PDF buffer (works in RAM or from disk)
+        const dataBuffer = req.file.buffer || (req.file.path ? fs.readFileSync(req.file.path) : null);
+        if (!dataBuffer) {
+            return res.status(400).json({ error: 'Could not process PDF data.' });
+        }
+
         const data = await pdfParse(dataBuffer);
         const extractedText = data.text;
 
@@ -34,8 +40,10 @@ export const analyzeResume = async (req, res) => {
 
         await newResume.save();
 
-        // Delete the file after successful processing
-        fs.unlinkSync(req.file.path);
+        // Delete disk file if one was created
+        if (req.file.path && fs.existsSync(req.file.path)) {
+            fs.unlinkSync(req.file.path);
+        }
 
         res.status(200).json({
             message: 'Resume analyzed successfully',
@@ -44,7 +52,7 @@ export const analyzeResume = async (req, res) => {
 
     } catch (error) {
         console.error('Error in analyzeResume:', error);
-        if (req.file && fs.existsSync(req.file.path)) {
+        if (req.file && req.file.path && fs.existsSync(req.file.path)) {
             fs.unlinkSync(req.file.path);
         }
         res.status(500).json({ error: error.message || 'An error occurred during resume analysis.' });
@@ -61,7 +69,7 @@ export const getHistory = async (req, res) => {
     }
 };
 
-export const getHistoryById = async (req, res) => {
+export const getResumeById = async (req, res) => {
     try {
         const resume = await Resume.findById(req.params.id);
         if (!resume) {
@@ -69,20 +77,20 @@ export const getHistoryById = async (req, res) => {
         }
         res.status(200).json(resume);
     } catch (error) {
-        console.error('Error fetching history item:', error);
-        res.status(500).json({ error: 'Failed to fetch history item.' });
+        console.error('Error fetching resume by id:', error);
+        res.status(500).json({ error: 'Failed to fetch resume details.' });
     }
 };
 
-export const deleteHistoryById = async (req, res) => {
+export const deleteResumeById = async (req, res) => {
     try {
         const resume = await Resume.findByIdAndDelete(req.params.id);
         if (!resume) {
             return res.status(404).json({ error: 'Resume analysis not found.' });
         }
-        res.status(200).json({ message: 'History item deleted successfully.' });
+        res.status(200).json({ message: 'Analysis deleted successfully.' });
     } catch (error) {
-        console.error('Error deleting history item:', error);
-        res.status(500).json({ error: 'Failed to delete history item.' });
+        console.error('Error deleting resume:', error);
+        res.status(500).json({ error: 'Failed to delete resume analysis.' });
     }
 };

@@ -8,9 +8,9 @@ import History from './pages/History';
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className="app-layout">
         <Navbar />
-        <main className="flex-grow">
+        <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/analyzer" element={<Analyzer />} />
